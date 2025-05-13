@@ -3,6 +3,4 @@ langchain
 streamlit
 python-dotenv
 PyPDF2
-langchain_deepseek
-
--e .
+langchain-deepseek
