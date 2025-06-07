@@ -1,8 +1,8 @@
-openai
-langchain
 streamlit
+google-generativeai
 python-dotenv
+langchain
 PyPDF2
-langchain_deepseek
-
--e .
+chromadb
+faiss-cpu
+langchain_google_genai
