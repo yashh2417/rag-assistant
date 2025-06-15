@@ -33,26 +33,23 @@ gemini_embeddings = GoogleGenerativeAIEmbeddings(
 )
 model = ChatGoogleGenerativeAI(model="gemini-1.5-flash", convert_system_message_to_human=True)
 
-def load_pdfs(folder):
-    texts = []
-    for file in os.listdir(folder):
-        if file.endswith(".pdf"):
-            reader = PdfReader(os.path.join(folder, file))
-            full_text = ""
-            for page in reader.pages:
-                if page_text := page.extract_text():
-                    full_text += page_text
-            texts.append(full_text)
-    return texts
-
-def create_documents_from_texts(texts):
-    return [Document(page_content=text, metadata={"source": f"doc_{i}"}) for i, text in enumerate(texts)]
+import pdfplumber
 
 def build_rag_chain(folder_path):
-    texts = load_pdfs(folder_path)
-    docs = create_documents_from_texts(texts)
+    documents = []
+    for file in os.listdir(folder_path):
+        if file.endswith(".pdf"):
+            file_path = os.path.join(folder_path, file)
+            full_text = ""
+            with pdfplumber.open(file_path) as pdf:
+                for page in pdf.pages:
+                    text = page.extract_text()
+                    if text:
+                        full_text += text + "\n"
+            documents.append(Document(page_content=full_text.strip(), metadata={"source": file}))
+
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
-    splits = text_splitter.split_documents(docs)
+    splits = text_splitter.split_documents(documents)
     vectorstore = Chroma.from_documents(splits, embedding=gemini_embeddings)
     retriever = vectorstore.as_retriever()
 
