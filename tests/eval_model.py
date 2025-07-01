@@ -1,16 +1,24 @@
 import json
-import sys
-import os
-
-# Add the parent directory (rag-assistant/) to sys.path
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-
-# Now import from app
-from app.app import model, vectorstore
-
-from app import model, vectorstore  # reuse your loaded model and vectorstore
 from langchain.chains import ConversationalRetrievalChain
 from langchain.chains.conversation.memory import ConversationBufferMemory
+from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_pinecone import PineconeVectorStore
+
+from dotenv import load_dotenv
+
+load_dotenv()
+
+## setting GOOGLE API KEY in the environment variable
+os.environ["GOOGLE_API_KEY"] = os.getenv("GOOGLE_API_KEY")
+
+## setting PINECONE API KEY nad PINECONE ENVIRONMENT in the environment
+os.environ["PINECONE_API_KEY"] = os.getenv("PINECONE_API_KEY")
+os.environ["PINECONE_API_ENV"] = "us-east-1"
+
+model = ChatGoogleGenerativeAI(model = "gemini-2.0-flash", convert_system_message_to_human=True)
+
+## initializing vectorstore (pinecone)
+vectorstore = PineconeVectorStore(index_name="smart-assistant", embedding=gemini_embeddings)
 
 EVAL_FILE = "tests/eval_queries.json"
 
