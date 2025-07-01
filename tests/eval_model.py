@@ -1,4 +1,5 @@
 import json
+import os
 from langchain.chains import ConversationalRetrievalChain
 from langchain.chains.conversation.memory import ConversationBufferMemory
 from langchain_google_genai import ChatGoogleGenerativeAI
