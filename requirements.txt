@@ -21,7 +21,7 @@ langchain-pinecone
 # === Document Loaders ===
 langchain-community
 PyMuPDF          # for PDF loader
-pymupdf-binary   # sometimes needed to support PyMuPDF
+# pymupdf-binary   # sometimes needed to support PyMuPDF
 pandas           # for CSVLoader
 jq               # for JSONLoader schema support (requires jq installed on system too)
 
