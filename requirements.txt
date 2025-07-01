@@ -36,4 +36,4 @@ tqdm             # optional: for progress bars
 # scikit-learn
 
 # === Optional: For secure hash-based deduplication ===
-hashlib          # built-in; no need to pip install
+# hashlib          # built-in; no need to pip install
