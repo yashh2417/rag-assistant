@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Smart Chat Assistant</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+
+<body>
+    <div class="container">
+
+        <!-- Chat Section (Main Content) -->
+        <div class="chat-section">
+            <h1>🧠 Smart Chat Assistant</h1>
+            <div id="chat-box"></div>
+
+            <form id="chat-form">
+                <input type="text" id="user-input" placeholder="Ask something..." required>
+                <button type="submit">Send</button>
+            </form>
+        </div>
+
+        <!-- Upload Section (Secondary) -->
+        <div class="upload-section">
+            <h2>📄 Upload a Document</h2>
+            <form action="/upload" method="post" enctype="multipart/form-data">
+                <input type="file" name="file" required>
+                <button type="submit">Upload</button>
+            </form>
+
+            {% if filename %}
+            <p><strong>Last uploaded:</strong> {{ filename }}</p>
+            {% endif %}
+        </div>
+        <!-- Uploaded Files List -->
+        <!-- Uploaded Files List -->
+        <div class="uploaded-list">
+            <h3>🗂 Uploaded Files in Vector Store</h3>
+            {% if uploaded_files %}
+            <ul>
+                {% for file in uploaded_files %}
+                <li>{{ file }}</li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <p>No documents uploaded yet.</p>
+            {% endif %}
+        </div>
+
+
+    </div>
+
+    <script>
+        const chatBox = document.getElementById("chat-box");
+        const chatForm = document.getElementById("chat-form");
+        const userInput = document.getElementById("user-input");
+        const sessionId = crypto.randomUUID();
+
+        function appendMessage(message, sender) {
+            const div = document.createElement("div");
+            div.className = sender;
+            div.textContent = message;
+            chatBox.appendChild(div);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        chatForm.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const message = userInput.value;
+            appendMessage("You: " + message, "user");
+            userInput.value = "";
+
+            const res = await fetch("/chat", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ session_id: sessionId, message })
+            });
+
+            const data = await res.json();
+            const reply = data.response || "⚠️ No response.";
+            appendMessage("Bot: " + reply, "bot");
+        });
+    </script>
+</body>
+
+</html>

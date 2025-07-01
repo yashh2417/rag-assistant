@@ -1,11 +1,39 @@
-streamlit
-google-generativeai
-python-dotenv
-langchain
-PyPDF2
-chromadb
-faiss-cpu
-langchain_google_genai
+# === Web Framework ===
 fastapi
-pydantic
-langchain_chroma
+uvicorn[standard]
+
+# === Templates & Static ===
+jinja2
+
+# === File Handling ===
+python-multipart  # For UploadFile
+aiofiles          # Required by FastAPI to serve static
+
+# === Google Gemini LLMs ===
+langchain
+langchain-google-genai
+google-generativeai
+
+# === Pinecone Vector DB ===
+pinecone-client
+langchain-pinecone
+
+# === Document Loaders ===
+langchain-community
+PyMuPDF          # for PDF loader
+pymupdf-binary   # sometimes needed to support PyMuPDF
+pandas           # for CSVLoader
+jq               # for JSONLoader schema support (requires jq installed on system too)
+
+# === Utilities ===
+python-dotenv    # for .env loading
+pydantic         # required for request models
+requests         # standard HTTP calls
+tqdm             # optional: for progress bars
+
+# === Optional: Embedding Evaluation ===
+sentence-transformers
+scikit-learn
+
+# === Optional: For secure hash-based deduplication ===
+hashlib          # built-in; no need to pip install

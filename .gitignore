@@ -1,3 +1,6 @@
 mcqgen
 .env
 .ipynb_checkpoints
+
+rag-assistant
+__pycache__

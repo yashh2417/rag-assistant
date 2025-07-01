@@ -1,0 +1,94 @@
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #f0f2f5;
+    padding: 40px;
+    margin: 0;
+}
+
+.container {
+    max-width: 800px;
+    margin: auto;
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
+}
+
+.chat-section {
+    margin-bottom: 40px;
+}
+
+#chat-box {
+    max-height: 300px;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    padding: 15px;
+    margin-bottom: 15px;
+    background-color: #fefefe;
+    border-radius: 6px;
+}
+
+.user {
+    text-align: right;
+    color: #007bff;
+    margin-bottom: 10px;
+}
+
+.bot {
+    text-align: left;
+    color: #28a745;
+    margin-bottom: 10px;
+}
+
+#chat-form {
+    display: flex;
+    gap: 10px;
+}
+
+#user-input {
+    flex: 1;
+    padding: 10px;
+    font-size: 16px;
+}
+
+#chat-form button {
+    padding: 10px 16px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+#chat-form button:hover {
+    background-color: #45a049;
+}
+
+.upload-section {
+    padding-top: 20px;
+    border-top: 1px solid #ddd;
+    font-size: 14px;
+    color: #555;
+}
+
+.upload-section input[type="file"] {
+    margin-bottom: 10px;
+}
+
+.uploaded-list {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #f9f9f9;
+    border-radius: 6px;
+    border: 1px dashed #ccc;
+}
+
+.uploaded-list ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.uploaded-list li::before {
+    content: "📄 ";
+}

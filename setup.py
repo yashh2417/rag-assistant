@@ -1,9 +1,9 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='mcqgenerator',
+    name='smart-assistant',
     version='0.0.1',
-    description='generate mcq on the basis of context given.',
+    description='provide answers based on given context documents.',
     author='Yash',
     author_email='yashh2417@gmail.com',
     packages=find_packages(),
@@ -13,8 +13,6 @@ setup(
         'python-dotenv',
         'langchain',
         'PyPDF2',
-        'chromadb',
-        'faiss-cpu',
         'langchain_google_genai',
         'fastapi',
         'pydantic'
@@ -22,4 +20,3 @@ setup(
     python_requires='>=3.8',
 )
 
--e .
