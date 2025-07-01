@@ -23,7 +23,7 @@ langchain-community
 PyMuPDF          # for PDF loader
 # pymupdf-binary   # sometimes needed to support PyMuPDF
 pandas           # for CSVLoader
-jq               # for JSONLoader schema support (requires jq installed on system too)
+# jq               # for JSONLoader schema support (requires jq installed on system too)
 
 # === Utilities ===
 python-dotenv    # for .env loading
@@ -32,8 +32,8 @@ requests         # standard HTTP calls
 tqdm             # optional: for progress bars
 
 # === Optional: Embedding Evaluation ===
-sentence-transformers
-scikit-learn
+# sentence-transformers
+# scikit-learn
 
 # === Optional: For secure hash-based deduplication ===
 hashlib          # built-in; no need to pip install
