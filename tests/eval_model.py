@@ -1,4 +1,13 @@
 import json
+import sys
+import os
+
+# Add the parent directory (rag-assistant/) to sys.path
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+# Now import from app
+from app.app import model, vectorstore
+
 from app import model, vectorstore  # reuse your loaded model and vectorstore
 from langchain.chains import ConversationalRetrievalChain
 from langchain.chains.conversation.memory import ConversationBufferMemory
