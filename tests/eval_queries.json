@@ -1,0 +1,15 @@
+[
+    {
+        "query": "Who won IPL 2025?",
+        "expected_keywords": [
+            "Royal Challengers Bengaluru"
+        ]
+    },
+    {
+        "query": "What's in the HR policy?",
+        "expected_keywords": [
+            "leave",
+            "bonus"
+        ]
+    }
+]
