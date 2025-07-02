@@ -24,7 +24,7 @@ jobs:
           pip install -r requirements.txt
 
       - name: Run Chatbot Evaluation
-        run: python tests/eval_model.py
+        run: python ./tests/eval_model.py
 
       - name: 🐳 Log in to DockerHub
         uses: docker/login-action@v3

@@ -6,10 +6,15 @@
         ]
     },
     {
-        "query": "What's in the HR policy?",
+        "query": "after how many years has this team won the title?",
         "expected_keywords": [
-            "leave",
-            "bonus"
+            "18"
+        ]
+    },
+    {
+        "query": "Does virat kohli play for this team?",
+        "expected_keywords": [
+            "yes"
         ]
     }
 ]
