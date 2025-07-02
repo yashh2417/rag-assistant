@@ -28,7 +28,8 @@ vectorstore = PineconeVectorStore(index_name="smart-assistant", embedding=gemini
 
 EVAL_FILE = "eval_queries.json"
 
-def load_tests(path=EVAL_FILE):
+def load_tests():
+    path = os.path.join(os.path.dirname(__file__), EVAL_FILE)
     with open(path, "r") as f:
         return json.load(f)
 
