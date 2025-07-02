@@ -18,24 +18,23 @@ from langchain_community.document_loaders.csv_loader import CSVLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from fastapi.responses import JSONResponse
 from fastapi.responses import RedirectResponse
+from pathlib import Path
 
-
-
-# from preprocessing import data_loader_and_chunking
-
+## loading env variables
 from dotenv import load_dotenv
 
 load_dotenv()
 
+## initializing fastapi
 app = FastAPI()
 
-from pathlib import Path
-
-upload_dir = Path("temp_uploads")  # or any temp/ directory
+## creating temp-upload directory for storing images
+upload_dir = Path("app/app/temp_uploads")  # or any temp/ directory
 upload_dir.mkdir(exist_ok=True)  # create if not exists 
 
-app.mount("/static", StaticFiles(directory="static"), name="static")
-templates = Jinja2Templates(directory="templates")
+## setting templates and static file
+app.mount("/static", StaticFiles(directory="app/app/static"), name="static")
+templates = Jinja2Templates(directory="app/app/templates")
 
 ## setting GOOGLE API KEY in the environment variable
 os.environ["GOOGLE_API_KEY"] = os.getenv("GOOGLE_API_KEY")
@@ -54,7 +53,6 @@ model = ChatGoogleGenerativeAI(model = "gemini-2.0-flash", convert_system_messag
 
 ## initializing embeddings
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
-
 gemini_embeddings = GoogleGenerativeAIEmbeddings(
     model="models/embedding-001"
 )
@@ -62,37 +60,38 @@ gemini_embeddings = GoogleGenerativeAIEmbeddings(
 ## initializing vectorstore (pinecone)
 vectorstore = PineconeVectorStore(index_name="smart-assistant", embedding=gemini_embeddings)
 
+## json files for hash and file name storing
 import json
 
-UPLOAD_TRACK_FILE = Path("uploaded_files.json")
-HASH_TRACK_FILE = Path("uploaded_hashes.json")
+UPLOAD_TRACK_FILE = Path("app/app/uploaded_files.json")
+HASH_TRACK_FILE = Path("app/app/uploaded_hashes.json")
 
-# Load uploaded filenames
+## Load uploaded filenames
 if UPLOAD_TRACK_FILE.exists():
     with open(UPLOAD_TRACK_FILE, "r") as f:
         uploaded_files = json.load(f)
 else:
     uploaded_files = []
 
-# Load uploaded file hashes
+## Load uploaded file hashes
 if HASH_TRACK_FILE.exists():
     with open(HASH_TRACK_FILE, "r") as f:
         stored_hashes = json.load(f)
 else:
     stored_hashes = []
 
-# ----------------- Utility -----------------
+## Utility for hashing
 def compute_file_hash(content: bytes) -> str:
     return hashlib.sha256(content).hexdigest()
 
-# Load previously uploaded files (or start with empty list)
+## Load previously uploaded files (or start with empty list)
 if UPLOAD_TRACK_FILE.exists():
     with open(UPLOAD_TRACK_FILE, "r") as f:
         uploaded_files = json.load(f)
 else:
     uploaded_files = []
 
-
+## function for loading and chunking the data
 def data_loader_and_chunking(file_path, ext):
 
     if ext == "pdf":
@@ -112,7 +111,7 @@ def data_loader_and_chunking(file_path, ext):
 
     return text_chunks
 
-
+## routes
 @app.get("/", response_class=HTMLResponse)
 async def index(request: Request):
     return templates.TemplateResponse("index.html", {"request": request, "uploaded_files": uploaded_files})
@@ -124,11 +123,11 @@ async def upload_document(request: Request, file: UploadFile = File(...)):
 
     file_hash = compute_file_hash(contents)
 
-    # ✅ Skip if duplicate content already embedded
+    ## Skip if duplicate content already embedded
     if file_hash in stored_hashes:
         return RedirectResponse(url="/?msg=duplicate", status_code=303)
 
-    # Save the file temporarily
+    ## Save the file temporarily
     upload_dir = Path("temp_uploads")
     upload_dir.mkdir(exist_ok=True)
     file_path = upload_dir / file.filename
@@ -141,14 +140,14 @@ async def upload_document(request: Request, file: UploadFile = File(...)):
     finally:
         file_path.unlink()
 
-    # ✅ Embed and store metadata
+    ## Embed and store metadata
     PineconeVectorStore.from_documents(
         text_chunks,
         index_name="smart-assistant",
         embedding=gemini_embeddings
     )
 
-    # Update JSON tracking files
+    ## Update JSON tracking files
     uploaded_files.append(file.filename)
     stored_hashes.append(file_hash)
 
@@ -160,55 +159,12 @@ async def upload_document(request: Request, file: UploadFile = File(...)):
 
     return RedirectResponse(url="/", status_code=303)
 
-
-# @app.post("/upload", response_class=HTMLResponse)
-# async def upload_document(request: Request, file: UploadFile = File(...)):
-#     # Step 1: Save the file temporarily
-#     contents = await file.read()
-#     ext = file.filename.split(".")[-1].lower()
-    
-#     upload_dir = Path("temp_uploads")
-#     upload_dir.mkdir(exist_ok=True)
-
-#     file_path = upload_dir / file.filename
-
-#     with open(file_path, "wb") as buffer:
-#         buffer.write(contents)
-    
-#     # Step 2: Load and chunk the data
-#     try:
-#         text_chunks = data_loader_and_chunking(file_path, ext)
-#     finally:
-#         # Step 3: Delete the file after processing
-#         if file_path.exists():
-#             file_path.unlink()
-        
-#     # ✅ Save uploaded filename to the list and persist to JSON
-#     if file.filename not in uploaded_files:
-#         uploaded_files.append(file.filename)
-#         with open(UPLOAD_TRACK_FILE, "w") as f:
-#             json.dump(uploaded_files, f)
-    
-#     # Save filename persistently
-#     if file.filename not in uploaded_files:
-#         uploaded_files.append(file.filename)
-#         with open(UPLOAD_TRACK_FILE, "w") as f:
-#             json.dump(uploaded_files, f)
-
-#         # ✅ Only store in vector DB if it’s truly new
-#         PineconeVectorStore.from_documents(
-#             text_chunks,
-#             index_name="smart-assistant",
-#             embedding=gemini_embeddings
-#         )
-
-#     return RedirectResponse(url="/", status_code=303)
-
-# Chat endpoint
+## Chat endpoint
 class ChatRequest(BaseModel):
     session_id: str
     message: str
 
+## session id for chating
 sessions = {}
 
 @app.post("/chat")
@@ -217,6 +173,7 @@ async def chat(req: ChatRequest):
     message = req.message
 
     if session_id not in sessions:
+        ## memory for buffer memory
         memory = ConversationBufferMemory(memory_key="chat_history", return_messages=True)
         chain = ConversationalRetrievalChain.from_llm(
             llm=model,
@@ -226,10 +183,6 @@ async def chat(req: ChatRequest):
         sessions[session_id] = chain
 
     chain = sessions[session_id]
-    # response = chain.invoke(
-    #     message,
-    #     tools=[GenAITool(google_search={})],
-    # )
     response = chain.run(message)
 
     return JSONResponse({"response": response})
