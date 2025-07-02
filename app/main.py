@@ -29,12 +29,8 @@ load_dotenv()
 app = FastAPI()
 
 ## setting templates and static file
-BASE_DIR = Path(__file__).resolve().parent
-static_dir = BASE_DIR / "static"
-templates_dir = BASE_DIR / "templates"
-
-app.mount("/static", StaticFiles(directory=static_dir), name="static")
-templates = Jinja2Templates(directory=templates_dir)
+app.mount("/static", StaticFiles(directory="/app/app/static"), name="static")
+templates = Jinja2Templates(directory="/app/app/static")
 
 ## setting GOOGLE API KEY in the environment variable
 os.environ["GOOGLE_API_KEY"] = os.getenv("GOOGLE_API_KEY")
@@ -64,8 +60,8 @@ vectorstore = PineconeVectorStore(index_name="smart-assistant", embedding=gemini
 ## json files for hash and file name storing
 import json
 
-UPLOAD_TRACK_FILE = Path("uploaded_files.json")
-HASH_TRACK_FILE = Path("uploaded_hashes.json")
+UPLOAD_TRACK_FILE = Path("app/app/uploaded_files.json")
+HASH_TRACK_FILE = Path("app/app/uploaded_hashes.json")
 
 ## Load uploaded filenames
 if UPLOAD_TRACK_FILE.exists():
@@ -129,7 +125,7 @@ async def upload_document(request: Request, file: UploadFile = File(...)):
         return RedirectResponse(url="/?msg=duplicate", status_code=303)
 
     ## Save the file temporarily
-    upload_dir = Path("temp_uploads")
+    upload_dir = Path("app/app/temp_uploads")
     upload_dir.mkdir(exist_ok=True)
     file_path = upload_dir / file.filename
 
