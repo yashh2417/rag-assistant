@@ -29,8 +29,8 @@ load_dotenv()
 app = FastAPI()
 
 ## setting templates and static file
-app.mount("/static", StaticFiles(directory="app/app/static"), name="static")
-templates = Jinja2Templates(directory="app/app/templates")
+app.mount("/static", StaticFiles(directory="app/static"), name="static")
+templates = Jinja2Templates(directory="app/templates")
 
 ## setting GOOGLE API KEY in the environment variable
 os.environ["GOOGLE_API_KEY"] = os.getenv("GOOGLE_API_KEY")
