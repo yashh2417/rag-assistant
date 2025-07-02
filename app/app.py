@@ -28,10 +28,6 @@ load_dotenv()
 ## initializing fastapi
 app = FastAPI()
 
-## creating temp-upload directory for storing images
-upload_dir = Path("app/app/temp_uploads")  # or any temp/ directory
-upload_dir.mkdir(exist_ok=True)  # create if not exists 
-
 ## setting templates and static file
 app.mount("/static", StaticFiles(directory="app/app/static"), name="static")
 templates = Jinja2Templates(directory="app/app/templates")
@@ -63,8 +59,8 @@ vectorstore = PineconeVectorStore(index_name="smart-assistant", embedding=gemini
 ## json files for hash and file name storing
 import json
 
-UPLOAD_TRACK_FILE = Path("app/app/uploaded_files.json")
-HASH_TRACK_FILE = Path("app/app/uploaded_hashes.json")
+UPLOAD_TRACK_FILE = Path("uploaded_files.json")
+HASH_TRACK_FILE = Path("uploaded_hashes.json")
 
 ## Load uploaded filenames
 if UPLOAD_TRACK_FILE.exists():
