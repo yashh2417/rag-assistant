@@ -49,8 +49,13 @@ UPLOAD_TRACK_FILE = BASE_DIR / "uploaded_files.json"
 HASH_TRACK_FILE = BASE_DIR / "uploaded_hashes.json"
 
 # Load previously uploaded data
-uploaded_files = json.loads(UPLOAD_TRACK_FILE.read_text()) if UPLOAD_TRACK_FILE.exists() else []
-stored_hashes = json.loads(HASH_TRACK_FILE.read_text()) if HASH_TRACK_FILE.exists() else []
+def safe_load_json(path: Path):
+    if path.exists() and path.read_text().strip():
+        return json.loads(path.read_text())
+    return []
+
+uploaded_files = safe_load_json(UPLOAD_TRACK_FILE)
+stored_hashes = safe_load_json(HASH_TRACK_FILE)
 
 # Utility function to compute SHA256 hash of file
 def compute_file_hash(content: bytes) -> str:
