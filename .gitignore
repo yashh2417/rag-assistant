@@ -4,3 +4,5 @@ mcqgen
 
 rag-assistant
 __pycache__
+assistant
+.DS_Store

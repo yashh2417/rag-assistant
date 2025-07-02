@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -11,9 +10,10 @@
 <body>
     <div class="container">
 
-        <!-- Chat Section (Main Content) -->
+        <!-- Chat Section -->
         <div class="chat-section">
             <h1>🧠 Smart Chat Assistant</h1>
+
             <div id="chat-box"></div>
 
             <form id="chat-form">
@@ -22,9 +22,10 @@
             </form>
         </div>
 
-        <!-- Upload Section (Secondary) -->
+        <!-- Document Upload Section -->
         <div class="upload-section">
             <h2>📄 Upload a Document</h2>
+
             <form action="/upload" method="post" enctype="multipart/form-data">
                 <input type="file" name="file" required>
                 <button type="submit">Upload</button>
@@ -34,10 +35,11 @@
             <p><strong>Last uploaded:</strong> {{ filename }}</p>
             {% endif %}
         </div>
-        <!-- Uploaded Files List -->
+
         <!-- Uploaded Files List -->
         <div class="uploaded-list">
             <h3>🗂 Uploaded Files in Vector Store</h3>
+
             {% if uploaded_files %}
             <ul>
                 {% for file in uploaded_files %}
@@ -48,15 +50,25 @@
             <p>No documents uploaded yet.</p>
             {% endif %}
         </div>
-
-
     </div>
 
+    <!-- Chat Script -->
     <script>
         const chatBox = document.getElementById("chat-box");
         const chatForm = document.getElementById("chat-form");
         const userInput = document.getElementById("user-input");
-        const sessionId = crypto.randomUUID();
+
+        // Generate unique session ID
+        // Fallback UUID generator
+        function generateUUID() {
+            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+                const r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
+                return v.toString(16);
+            });
+        }
+
+        const sessionId = generateUUID();
+
 
         function appendMessage(message, sender) {
             const div = document.createElement("div");
@@ -68,19 +80,26 @@
 
         chatForm.addEventListener("submit", async (e) => {
             e.preventDefault();
-            const message = userInput.value;
+            const message = userInput.value.trim();
+            if (!message) return;
+
             appendMessage("You: " + message, "user");
             userInput.value = "";
 
-            const res = await fetch("/chat", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ session_id: sessionId, message })
-            });
+            try {
+                const res = await fetch("/chat", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ session_id: sessionId, message })
+                });
 
-            const data = await res.json();
-            const reply = data.response || "⚠️ No response.";
-            appendMessage("Bot: " + reply, "bot");
+                const data = await res.json();
+                const reply = data.response || "⚠️ No response.";
+                appendMessage("Bot: " + reply, "bot");
+            } catch (err) {
+                appendMessage("⚠️ Failed to get response.", "bot");
+                console.error("Chat error:", err);
+            }
         });
     </script>
 </body>

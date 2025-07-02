@@ -4,3 +4,5 @@ rag-assistant
 mcqgen
 .ipynb_checkpoints
 __pycache__
+assistant
+.DS_Store
