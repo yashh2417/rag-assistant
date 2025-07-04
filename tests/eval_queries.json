@@ -16,5 +16,20 @@
         "expected_keywords": [
             "yes"
         ]
+    },
+    {
+        "query": "What are the skills of Yash?",
+        "expected_keywords": [
+            "LLM",
+            "RAG",
+            "Vector Database",
+            "Python"
+        ]
+    },
+    {
+        "query": "What is his Email I'd?",
+        "expected_keywords": [
+            "yashh2417@gmail.com"
+        ]
     }
 ]
