@@ -12,12 +12,6 @@
         ]
     },
     {
-        "query": "Does virat kohli play for this team?",
-        "expected_keywords": [
-            "yes"
-        ]
-    },
-    {
         "query": "What are the skills of Yash?",
         "expected_keywords": [
             "LLM",

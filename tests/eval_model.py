@@ -16,6 +16,7 @@ os.environ["GOOGLE_API_KEY"] = os.getenv("GOOGLE_API_KEY")
 ## setting LANGSMITH API KEY in environment variable for tracking
 os.environ["LANGSMITH_API_KEY"] = os.getenv("LANGSMITH_API_KEY")
 os.environ["LANGSMITH_TRACING"] = "true"
+os.environ["LANGCHAIN_PROJECT"] = "RAG Assistant"
 
 ## setting PINECONE API KEY nad PINECONE ENVIRONMENT in the environment
 os.environ["PINECONE_API_KEY"] = os.getenv("PINECONE_API_KEY")
