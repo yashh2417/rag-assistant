@@ -92,3 +92,13 @@ body {
 .uploaded-list li::before {
     content: "📄 ";
 }
+
+.bot {
+    background-color: #f0f0f0;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 6px;
+    font-family: Arial, sans-serif;
+    white-space: pre-line;
+    /* optional if you're not using <br> */
+}

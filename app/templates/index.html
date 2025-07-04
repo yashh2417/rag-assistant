@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <title>Smart Chat Assistant</title>
     <link rel="stylesheet" href="/static/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
 
 <body>
@@ -50,8 +51,13 @@
             <p>No documents uploaded yet.</p>
             {% endif %}
         </div>
-        <p>Name files clearly : Use a descriptive name so it's easy to understand what's inside.</p>
-        <p>Disclaimer : Your file is converted to embeddings and stored in a vector DB</p>
+        <p><strong>📌 Important:</strong></p>
+        <ul>
+            <li><strong>Name files clearly</strong>: Use a descriptive name so it's easy to understand what's inside.
+            </li>
+            <li><strong>Disclaimer</strong>: Your file is converted to embeddings and stored in a vector DB.</li>
+        </ul>
+
     </div>
 
     <!-- Chat Script -->
@@ -71,11 +77,10 @@
 
         const sessionId = generateUUID();
 
-
         function appendMessage(message, sender) {
             const div = document.createElement("div");
             div.className = sender;
-            div.textContent = message;
+            div.innerHTML = message;
             chatBox.appendChild(div);
             chatBox.scrollTop = chatBox.scrollHeight;
         }
@@ -97,7 +102,11 @@
 
                 const data = await res.json();
                 const reply = data.response || "⚠️ No response.";
-                appendMessage("Bot: " + reply, "bot");
+                // const formattedReply = reply.replace(/\n/g, "<br>");
+                // appendMessage("Bot: " + formattedReply, "bot");
+                appendMessage("Bot: " + marked.parse(reply), "bot");
+
+
             } catch (err) {
                 appendMessage("⚠️ Failed to get response.", "bot");
                 console.error("Chat error:", err);

@@ -17,7 +17,6 @@ from langchain.chains.conversation.memory import ConversationBufferMemory
 from langchain_community.document_loaders import PyMuPDFLoader, CSVLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from motor.motor_asyncio import AsyncIOMotorClient
-import ssl
 
 # Load environment variables
 load_dotenv()
