@@ -94,11 +94,20 @@ body {
 }
 
 .bot {
-    background-color: #f0f0f0;
+    background-color: #eef1e7;
     padding: 10px;
     margin: 10px 0;
     border-radius: 6px;
     font-family: Arial, sans-serif;
     white-space: pre-line;
     /* optional if you're not using <br> */
+}
+
+.user {
+    background-color: #e1eeed;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 6px;
+    font-family: Arial, sans-serif;
+    white-space: pre-line;
 }

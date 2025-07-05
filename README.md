@@ -32,18 +32,19 @@ A production-ready RAG (Retrieval-Augmented Generation) web application that lev
 
 .
 ├── app/
-│   ├── main.py                  # FastAPI backend logic
-│   ├── templates/               # Jinja2 HTML templates
-│   ├── static/                  # Static CSS/JS/images
-│   ├── uploaded_files.json      # Tracks uploaded filenames
-│   ├── uploaded_hashes.json     # Tracks file hashes to prevent duplicates
-│   └── temp_uploads/            # Temporary storage during processing
+│   ├── main.py                                        # FastAPI backend logic
+│   ├── templates/                                     # Jinja2 HTML templates
+│   ├── static/                                        # Static CSS/JS/images
+│   ├ ____________________├── filenames in mongodb     # Tracks uploaded filenames in mongodb
+│   ├                     ├── hashes in mongodb        # Tracks file hashes to prevent duplicates in mongodb
+│   └── temp_uploads/                                  # Temporary storage during processing
 ├── requirements.txt
-├── .env                         # API keys and secrets (not committed)
+├── .env                                               # API keys and secrets (not committed)
 ├── Dockerfile
 ├── .github/
 │   └── workflows/
-│       └── deploy.yaml          # GitHub Actions CI/CD pipeline
+│       └── deploy.yaml                                # GitHub Actions CI/CD pipeline
+├-------------------------├ Pinecone Vector DB         # Storing embeddings in Vector DB
 └── README.md
 
 ````
