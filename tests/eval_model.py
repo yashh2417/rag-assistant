@@ -25,11 +25,11 @@ os.environ["PINECONE_API_ENV"] = "us-east-1"
 model = ChatGoogleGenerativeAI(model = "gemini-2.0-flash", convert_system_message_to_human=True)
 
 gemini_embeddings = GoogleGenerativeAIEmbeddings(
-    model="models/embedding-001"
+    model="models/gemini-embedding-001"
 )
 
 ## initializing vectorstore (pinecone)
-vectorstore = PineconeVectorStore(index_name="smart-assistant", embedding=gemini_embeddings)
+vectorstore = PineconeVectorStore(index_name="rag", embedding=gemini_embeddings)
 
 EVAL_FILE = "eval_queries.json"
 

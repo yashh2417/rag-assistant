@@ -53,10 +53,10 @@ os.environ["PINECONE_API_ENV"] = os.getenv("PINECONE_API_ENV", "us-east-1")
 
 # Initialize LLM and embeddings
 model = ChatGoogleGenerativeAI(model="gemini-2.0-flash", convert_system_message_to_human=True)
-gemini_embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001")
+gemini_embeddings = GoogleGenerativeAIEmbeddings(model="models/gemini-embedding-001")
 
 # Initialize vector store
-vectorstore = PineconeVectorStore(index_name="smart-assistant", embedding=gemini_embeddings)
+vectorstore = PineconeVectorStore(index_name="rag", embedding=gemini_embeddings)
 
 def compute_file_hash(content: bytes) -> str:
     return hashlib.sha256(content).hexdigest()
@@ -108,7 +108,7 @@ async def upload_document(file: UploadFile = File(...)):
 
     try:
         chunks = data_loader_and_chunking(file_path, ext)
-        PineconeVectorStore.from_documents(chunks, index_name="smart-assistant", embedding=gemini_embeddings)
+        PineconeVectorStore.from_documents(chunks, index_name="rag", embedding=gemini_embeddings)
     finally:
         file_path.unlink()
 

@@ -6,3 +6,4 @@ mcqgen
 __pycache__
 assistant
 .DS_Store
+rag
