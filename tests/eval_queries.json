@@ -1,23 +1,24 @@
 [
     {
-        "query": "Who won IPL 2025?",
-        "expected_keywords": [
-            "Royal Challengers Bengaluru"
-        ]
-    },
-    {
-        "query": "after how many years has this team won the title?",
-        "expected_keywords": [
-            "18"
-        ]
-    },
-    {
-        "query": "What are the skills of Yash?",
+        "query": "What are the technical skills of Yash?",
         "expected_keywords": [
             "LLM",
             "RAG",
             "Vector Database",
             "Python"
+        ]
+    },
+    {
+        "query": "What projects has Yash worked on?",
+        "expected_keywords": [
+            "RAG Assistant",
+            "LLM Fine-Tuning"
+        ]
+    },
+    {
+        "query": "Where did Yash complete his B.Tech?",
+        "expected_keywords": [
+            "JSS Academy of Technical Education"
         ]
     },
     {

@@ -1,7 +1,7 @@
 import json
 import os
 from langchain.chains import ConversationalRetrievalChain
-from langchain.chains.conversation.memory import ConversationBufferMemory
+from langchain.memory import ConversationBufferMemory
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_pinecone import PineconeVectorStore
@@ -22,7 +22,7 @@ os.environ["LANGCHAIN_PROJECT"] = "RAG Assistant"
 os.environ["PINECONE_API_KEY"] = os.getenv("PINECONE_API_KEY")
 os.environ["PINECONE_API_ENV"] = "us-east-1"
 
-model = ChatGoogleGenerativeAI(model = "gemini-2.0-flash", convert_system_message_to_human=True)
+model = ChatGoogleGenerativeAI(model = "gemini-2.0-flash")
 
 gemini_embeddings = GoogleGenerativeAIEmbeddings(
     model="models/gemini-embedding-001"

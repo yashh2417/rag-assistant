@@ -13,7 +13,7 @@ import hashlib
 from langchain_google_genai import ChatGoogleGenerativeAI, GoogleGenerativeAIEmbeddings
 from langchain_pinecone import PineconeVectorStore
 from langchain.chains import ConversationalRetrievalChain
-from langchain.chains.conversation.memory import ConversationBufferMemory
+from langchain.memory import ConversationBufferMemory
 from langchain_community.document_loaders import PyMuPDFLoader, CSVLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from motor.motor_asyncio import AsyncIOMotorClient
@@ -52,7 +52,7 @@ os.environ["PINECONE_API_KEY"] = os.getenv("PINECONE_API_KEY")
 os.environ["PINECONE_API_ENV"] = os.getenv("PINECONE_API_ENV", "us-east-1")
 
 # Initialize LLM and embeddings
-model = ChatGoogleGenerativeAI(model="gemini-2.0-flash", convert_system_message_to_human=True)
+model = ChatGoogleGenerativeAI(model="gemini-2.0-flash")
 gemini_embeddings = GoogleGenerativeAIEmbeddings(model="models/gemini-embedding-001")
 
 # Initialize vector store
