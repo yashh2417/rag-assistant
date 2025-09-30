@@ -53,7 +53,8 @@ def run_tests():
         query = test["query"]
         expected_keywords = test["expected_keywords"]
 
-        result = chain.run(query)
+        # result = chain.run(query)
+        result = chain.invoke({"question": query})
         print(f"\n🟡 Query: {query}")
         print(f"📨 Response: {result}")
 
