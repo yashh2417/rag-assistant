@@ -58,7 +58,7 @@ def run_tests():
         print(f"\n🟡 Query: {query}")
         print(f"📨 Response: {result}")
 
-        if all(word.lower() in result.lower() for word in expected_keywords):
+        if all(word.lower() in result['answer'].lower() for word in expected_keywords):
             print("✅ PASSED")
             passed += 1
         else:
