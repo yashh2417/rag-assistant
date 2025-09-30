@@ -17,6 +17,7 @@ from langchain.chains.conversation.memory import ConversationBufferMemory
 from langchain_community.document_loaders import PyMuPDFLoader, CSVLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from motor.motor_asyncio import AsyncIOMotorClient
+from google.api_core import exceptions
 
 # Load environment variables
 load_dotenv()
@@ -135,7 +136,13 @@ async def chat(req: ChatRequest):
 
     chain = sessions[req.session_id]
     try:
-        result = chain.run(req.message)
-        return JSONResponse({"response": result})
+        # result = chain.run(req.message)
+        result = chain.invoke({"question": req.message})
+        return JSONResponse({"response": result.get("answer", "Sorry, I could not process your request.")})
+        # return JSONResponse({"response": result})
+    except exceptions.ResourceExhausted as e:
+        error_message = "I'm sorry, but I've exceeded my current usage limit for the AI model. Please check the service plan and billing details."
+        return JSONResponse({"response": error_message}, status_code=429)
+
     except Exception as e:
         return JSONResponse({"response": f"Error: {str(e)}"}, status_code=500)
